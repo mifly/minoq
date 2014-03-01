@@ -1,0 +1,20 @@
+{
+  "name": "minoq",
+  "version": "0.0.1",
+  "main": "app.js",
+  "private": true,
+  "customHost": [
+    "minoq.com",
+    "club.cnodejs.org"
+  ],
+  "dependencies": {
+    "mongoose": "2.7.3"
+  },
+  "devDependencies": {
+    "should": "*",
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "make test"
+  }
+}
