@@ -1,6 +1,6 @@
 //httpclient
 var http = require('http');
-var querystring=require('querystring');
+var querystring = require('querystring');
 
 /*
 * Recursively merge properties of two objects
@@ -44,7 +44,7 @@ Httpclient.prototype.request = function (options, params, callback){
 
 	var contents = '';
 	if(params){
-		contents = querystring.stringify(params);
+		contents = JSON.stringify(params); //JSON.stringify
 		this.allOptions.headers['Content-Length'] = contents.length;
 	}
 
