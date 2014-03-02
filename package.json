@@ -8,7 +8,7 @@
     "club.cnodejs.org"
   ],
   "dependencies": {
-    "mongoose": "2.7.3"
+    "mongodb": "1.3.23"
   },
   "devDependencies": {
     "should": "*",
