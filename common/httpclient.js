@@ -49,18 +49,21 @@ Httpclient.prototype.request = function (options, params, callback){
 	}
 
 	this.allOptions = mergeJSON(this.allOptions,options);
-	var req = http.request(this.allOptions,callback);
+	var req = http.request(this.allOptions,function(resp){
+		callback(resp);
+	});
+	
 	req.write(contents);
 	req.end();
 
 };
 
 Httpclient.prototype.get = function (path, params, callback){
-	this.request({'path':path},params,callback);
+	this.request({'path':path,'method':'GET'},params,callback);
 };
 
 Httpclient.prototype.post = function (path, params, callback){
-	this.request({'method':'POST'},params,callback);
+	this.request({'method':'POST','path':path},params,callback);
 };
 Httpclient.prototype.update = function (path,params, callback){
 	this.request({'method':"PUT"},params,callback);

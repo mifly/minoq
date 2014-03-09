@@ -14,6 +14,19 @@ var resourceNotFoundError = function(req, resp){
     resp.end("Resouce not found!");
 };
 
+// load config
+var config = require('./config');
+// mongodb connection
+var mongoose = require('mongoose');
+mongoose.connect(config.db,function (err) {
+  if (err) {
+    console.error('connect to %s error: ', config.db, err.message);
+    process.exit(1);
+  }
+});
+
+//
+
 var route = function(req,resp){
     var pathName = url.parse(req.url).pathname;
     var paths = pathName.split('/');
@@ -26,7 +39,18 @@ var route = function(req,resp){
         if (services[serviceName] && typeof services[serviceName] === 'object') {
             console.log('invoke method:' +req.method);
             console.log(typeof services[serviceName][req.method]);
-            services[serviceName][req.method].apply(null,[req.body,resp]);
+            services[serviceName][req.method].apply(null,[req.body,function(err,result){
+                if(err){
+                    console.error(err);
+                }
+                //console.log(result);
+                resp.writeHead(200, {"Content-Type": "application/json"});
+                /*resp.write("{");
+                resp.write("id:"+"some id"+",name:"+result.name+",domainname:'hostname1.com'");
+                resp.end("}");*/
+
+                resp.end(JSON.stringify(result));
+            }]);
         }else{
             // TODO: process resource not found error
             return new Error("Not Found!");

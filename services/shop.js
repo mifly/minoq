@@ -1,38 +1,32 @@
 /**
  * Created by yichengfeng on 14-3-1.
  */
- var MongoClient = require('mongodb').MongoClient;
 
- function createShop (params,resp) {
- 	// TODO:
- 	console.log('createShop');
- 	MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
-    if(err) throw err;
+var models = require('../models');
+var Shop = models.Shop;
 
-    var collection = db.collection('shops');
-    collection.insert(params, function(err, docs) {
-    	resp.writeHead(200, {"Content-Type": "application/json"});
-	 	resp.write("{");
-	 	console.log(docs);
-	    resp.write("id:docs['_id'],name:'create shop success!'");
-	    resp.end("}");
-    });
-  });
+ function createShop (params,callback) {
+ 	console.log("begin create shop.");
+ 	console.log("params:" + JSON.stringify(params));
+ 	var shop = new Shop(params);	shop.active = false;
+	shop.save(callback);
+ 	console.log("end create shop.");
  };
 
- function updateShop(req,resp){
+ function updateShop(params,resp){
 
  	console.log('updateShop');
  };
- function deleteShop(req,resp) {
+
+ function deleteShop(params,resp) {
  	console.log('delete');
  };
- function getShop (params,resp) {
- 	console.log('in get shop method.');
- 	resp.writeHead(200, {"Content-Type": "application/json"});
- 	resp.write("{");
-    resp.write("id:1,name:'shop test1',domainname:'hostname1.com'");
-    resp.end("}");
+
+ function getShop (params,callback) {
+ 	// console.log('in get shop method.');
+ 	//console.log(params);
+ 	Shop.findOne({name: params.name}, callback);
+ 	// console.log('end get shop method.');
  };
 
 module.exports = {
